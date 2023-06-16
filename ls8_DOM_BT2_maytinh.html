@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    button {
+        width: 50px;
+    }
+</style>
+
+<body>
+
+    <!-- <h>Calculator</h>
+    <br><br>
+    <input type="number" id="number1" placeholder="Nhập số A">
+    <input type="number" id="number2" placeholder="Nhập số B">
+    <p id="result">0</p>
+    <button onclick="calculate('+')">+</button>
+    <button onclick="calculate('-')">-</button>
+    <button onclick="calculate('x')">x</button>
+    <button onclick="calculate('/')">/</button>
+
+    <script>
+        function calculate(operator) { //tham số: biến của hàm
+
+            let a = +document.getElementById("number1").value;
+            let b = +document.getElementById("number2").value;
+
+            let result;
+
+            switch (operator) {
+                case "+":
+                    result = a + b;
+                    break;
+                case "-":
+                    result = a - b;
+                    break;
+                case "x":
+                    result = a * b;
+                    break;
+                case "/":
+                    // result = a / b;
+                    if (b == 0) {
+                        result = "Không chia được cho 0"
+                    } else {
+                        result = a / b;
+                    }
+                    break;
+            }
+
+            document.getElementById("result").innerText = result;
+        }
+    </script> -->
+
+
+<input type="number" id="operand1" placeholder="Nhập số A">
+<br>
+<label for="operator">Phép toán:</label>
+<select id="operator">
+  <option value="+">Cộng (+)</option>
+  <option value="-">Trừ (-)</option>
+  <option value="*">Nhân (*)</option>
+  <option value="/">Chia (/)</option>
+</select>
+<br>
+<input type="number" id="operand2" placeholder="Nhập số B">
+<br>
+<button onclick="calculate()">Tính toán</button>
+<br>
+<p id="result"></p>
+
+<script>
+  function calculate() {
+    // Lấy giá trị các toán hạng và toán tử từ các phần tử input và select
+    var operand1 = parseFloat(document.getElementById("operand1").value);
+    var operator = document.getElementById("operator").value;
+    var operand2 = parseFloat(document.getElementById("operand2").value);
+
+    // Kiểm tra phép toán và thực hiện tính toán
+    var result;
+    if (operator === "+") {
+      result = operand1 + operand2;
+    } else if (operator === "-") {
+      result = operand1 - operand2;
+    } else if (operator === "*") {
+      result = operand1 * operand2;
+    } else if (operator === "/") {
+      result = operand1 / operand2;
+    }
+
+    // Hiển thị kết quả
+    document.getElementById("result").innerHTML = "Kết quả: " + result;
+  }
+</script>
+</body>
+
+</html>
