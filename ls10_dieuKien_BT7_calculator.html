@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Máy tính đơn giản</h1>
+    <input type="text" id="expression" readonly>
+    <br>
+    <button onclick="addToExpression(7)">7</button>
+    <button onclick="addToExpression(8)">8</button>
+    <button onclick="addToExpression(9)">9</button>
+    <button onclick="addToExpression('/')">/</button>
+    <br>
+    <button onclick="addToExpression(4)">4</button>
+    <button onclick="addToExpression(5)">5</button>
+    <button onclick="addToExpression(6)">6</button>
+    <button onclick="addToExpression('*')">*</button>
+    <br>
+    <button onclick="addToExpression(1)">1</button>
+    <button onclick="addToExpression(2)">2</button>
+    <button onclick="addToExpression(3)">3</button>
+    <button onclick="addToExpression('-')">-</button>
+    <br>
+    <button onclick="addToExpression(0)">0</button>
+    <button onclick="evaluateExpression()">=</button>
+    <button onclick="addToExpression('+')">+</button>
+    <button onclick="clearExpression()">Clear</button>
+    <br>
+    <p id="result"></p>
+
+    <script>
+        let expression = '';
+
+        function addToExpression(value) {
+            expression += value;
+            document.getElementById('expression').value = expression;
+        }
+
+        function evaluateExpression() {
+            let result;
+            if (expression.includes('+')) {
+                let operands = expression.split('+');
+                result = parseFloat(operands[0]) + parseFloat(operands[1]);
+            } else if (expression.includes('-')) {
+                let operands = expression.split('-');
+                result = parseFloat(operands[0]) - parseFloat(operands[1]);
+            } else if (expression.includes('*')) {
+                let operands = expression.split('*');
+                result = parseFloat(operands[0]) * parseFloat(operands[1]);
+            } else if (expression.includes('/')) {
+                let operands = expression.split('/');
+                result = parseFloat(operands[0]) / parseFloat(operands[1]);
+            }
+            document.getElementById('result').innerHTML = `Result: ${result}`;
+        }
+
+        function clearExpression() {
+            expression = '';
+            document.getElementById('expression').value = expression;
+            document.getElementById('result').innerHTML = '';
+        }
+    </script>
+</body>
+
+</html>

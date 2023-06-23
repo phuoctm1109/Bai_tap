@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h>Tính điểm đại học khối D</h>
+    <br>
+    <p>Môn Toán
+        <input type="number" id="diemToan">
+    </p>
+    <p>Môn Văn
+        <input type="number" id="diemVan">
+    </p>
+    <p>Môn Anh
+        <input type="number" id="diemAnh">
+    </p>
+    <p>Khu vực
+        <select id="khuVuc">
+            <option value="KV1">KV1</option>
+            <option value="KV2">KV2</option>
+            <option value="KV2-NT">KV2-NT</option>
+            <option value="KV3">KV3</option>
+        </select>
+        <br><br>
+        <button type="button" onclick="tinhDiem()">Tính điểm</button>
+        <br>
+    <p>Tổng điểm đại học khối D của bạn là: </p>
+    <p id="tongDiem"></p>
+
+    <script>
+        function tinhDiem() {
+            let dt = +document.getElementById("diemToan").value;
+            let dv = +document.getElementById("diemVan").value;
+            let da = +document.getElementById("diemAnh").value;
+            let kv = document.getElementById("khuVuc").value;
+            let dkv;
+
+            switch (kv) {
+                case `KV1`:
+                    dkv = 0.75;
+                    break;
+                case `KV2-NT`:
+                    dkv = 0.5;
+                    break;
+                case `KV2`:
+                    dkv = 0.25;
+                    break;
+                case `KV3`:
+                    dkv = 0;
+                    break;
+            }
+            console.log(dkv);
+            document.getElementById('tongDiem').innerHTML = dt + dv + da + dkv;
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- <h>Amount</h>
+    <input type="number" id="amount">
+    <br>
+    <h>From Currency</h>
+    <select id="from">
+        <option value="VND">VND</option>
+        <option value="USD">USD</option>
+    </select>
+    <br>
+    <h>To Currency</h>
+    <select id="to">
+        <option value="VND">VND</option>
+        <option value="USD">USD</option>
+    </select>
+    <br>
+    <button type="button" onclick="convert()">Convert</button>
+    <br>
+    <p id="result"></p>
+
+    <script>
+        function convert() {
+            let amount = +document.getElementById("amount").value;
+            let from = document.getElementById("from").value;
+            let to = document.getElementById("to").value;
+            let TG = 23000; //vnd -> usd
+            if (from == "VND" & to == "USD") {
+            document.getElementById("result").innerHTML = amount * 1 / TG;}
+            else {
+            document.getElementById("result").innerHTML = amount * TG;}
+        } -->
+    <!-- <script> -->
+
+    <h1>Chuyển đổi tiền tệ</h1>
+    <p>Số tiền:</p>
+    <input type="number" id="amount">
+    <p>Từ:</p>
+    <select id="from">
+        <option value="VND">VND</option>
+        <option value="USD">USD</option>
+        <option value="AUD">AUD</option>
+    </select>
+    <p>Sang:</p>
+    <select id="to">
+        <option value="VND">VND</option>
+        <option value="USD">USD</option>
+        <option value="AUD">AUD</option>
+    </select>
+    <br><br>
+    <button type="button" onclick="convert()">Chuyển đổi</button>
+    <br>
+    <p id="result"></p>
+
+    <script>
+        function convert() {
+            let amount = parseFloat(document.getElementById("amount").value);
+            let from = document.getElementById("from").value;
+            let to = document.getElementById("to").value;
+            let exchangeRate;
+
+            if (from === "VND" && to === "USD") {
+                exchangeRate = 1 / 23000; // VND to USD exchange rate
+            } else if (from === "VND" && to === "AUD") {
+                exchangeRate = 1 / 16000; // VND to AUD exchange rate
+            } else if (from === "USD" && to === "VND") {
+                exchangeRate = 23000; // USD to VND exchange rate
+            } else if (from === "USD" && to === "AUD") {
+                exchangeRate = 1.4; // USD to AUD exchange rate
+            } else if (from === "AUD" && to === "VND") {
+                exchangeRate = 16000; // AUD to VND exchange rate
+            } else if (from === "AUD" && to === "USD") {
+                exchangeRate = 1 / 1.4; // AUD to USD exchange rate
+            } else {
+                exchangeRate = 1; // Same currency, no conversion needed
+            }
+
+            let convertedAmount = amount * exchangeRate;
+            document.getElementById("result").innerHTML = `${amount} ${from} = ${convertedAmount} ${to}`;
+        }
+    </script>
+</body>
+
+</html>
