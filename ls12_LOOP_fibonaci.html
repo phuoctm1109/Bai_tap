@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function fibonacci() {
+            let n = +prompt("Nhập N");
+
+            let a = 1;
+            let b = 1;
+            let str = "1,1";
+            let c = a + b;
+            let sum = c;
+
+            let i = 2;
+            while(true){
+                if(c > n) break;
+                str += ','+c;
+                sum += c;
+                a = b;
+                b = c;
+                c = a + b; 
+                i++;
+            }
+
+            // for (let i = 2; i < n; i++) {
+            //     c = a + b;
+            //     str += ','+c;
+            //     a = b;
+            //     b = c;
+            // }
+
+            document.write(str);
+            document.write("<br>");
+            document.write(sum);
+        }
+
+        fibonacci();
+    </script>
+
+</body>
+</html>
