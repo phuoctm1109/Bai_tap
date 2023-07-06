@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Nhập vào hai số nguyên a và b
+let a = parseInt(prompt("Nhập số nguyên a:"));
+let b = parseInt(prompt("Nhập số nguyên b:"));
+
+// Kiểm tra và đảm bảo a <= b
+if (a > b) {
+  // Nếu a > b, hoán đổi giá trị của a và b
+  let temp = a;
+  a = b;
+  b = temp;
+}
+
+// Tính tổng các số trong khoảng từ a đến b
+let sum = 0;
+for (let i = a; i <= b; i++) {
+  sum += i;
+}
+
+// In ra màn hình tổng các số
+console.log("Tổng các số từ " + a + " đến " + b + " là: " + sum);
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // Yêu cầu người dùng nhập vào một số nguyên dương
+        let number = parseInt(prompt("Nhập vào một số nguyên dương:"));
+
+        // Kiểm tra xem số nhập vào có phải là số nguyên dương hay không
+        while (number <= 0 || isNaN(number)) {
+            // Yêu cầu người dùng nhập lại nếu số nhập vào không hợp lệ
+            number = parseInt(prompt("Số nhập vào không hợp lệ. Vui lòng nhập lại một số nguyên dương:"));
+        }
+
+        // Hàm để đảo ngược số
+        function reverseNumber(num) {
+            let reversed = 0;
+            while (num > 0) {
+                reversed = reversed * 10 + (num % 10);
+                num = Math.floor(num / 10);
+            }
+            return reversed;
+        }
+
+        // In ra số đảo ngược của số nhập vào
+        let reversedNumber = reverseNumber(number);
+        alert("Số đảo ngược của " + number + " là: " + reversedNumber);
+        // console.log("Số đảo ngược của " + number + " là: " + reversedNumber);
+    </script>
+</body>
+
+</html>

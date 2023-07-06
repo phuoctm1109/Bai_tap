@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // Bài 1: Sử dụng vòng lặp để đếm từ 1 đến 100. Khi số là 99, hiển thị hộp thoại thông báo là đã hoàn thành.
+        // for (let i = 1; i <= 100; i++) {
+        //     if (i === 99) {
+        //         alert("Đã hoàn thành!");
+        //     }
+        // }
+
+        // // Bài 2: Sử dụng hàm prompt() để lấy thông tin nhiệt độ hiện tại được nhập bởi người truy cập. Nếu nhiệt độ nhập vào trên 100, yêu cầu người dùng giảm nhiệt độ. Nếu nhiệt độ dưới 20, yêu cầu người dùng tăng nhiệt độ.
+        // let temperature = parseFloat(prompt("Nhập nhiệt độ hiện tại:"));
+
+        // if (temperature > 100) {
+        //     alert("Hãy giảm nhiệt độ!");
+        // } else if (temperature < 20) {
+        //     alert("Hãy tăng nhiệt độ!");
+        // }
+
+        // Bài 3: Hiển thị ra 20 số trong dãy Fibonacci đầu tiên.
+
+
+        // let n = 20; // Số lượng số Fibonacci cần hiển thị
+        // let fib = [0, 1]; // Mảng chứa dãy Fibonacci
+
+        // for (let i = 2; i < n; i++) {
+        //     fib[i] = fib[i - 1] + fib[i - 2];
+        // }
+
+        // console.log(fib);
+
+        // Bài 4: Tìm số đầu tiên trong dãy Fibonacci chia hết cho 5.
+
+
+        // let fib = [0, 1]; // Mảng chứa dãy Fibonacci
+        // let i = 2; // Chỉ số bắt đầu từ 2
+
+        // while (true) {
+        //     fib[i] = fib[i - 1] + fib[i - 2];
+
+        //     if (fib[i] % 5 === 0) {
+        //         console.log("Số Fibonacci đầu tiên chia hết cho 5 là: " + fib[i]);
+        //         break;
+        //     }
+
+        //     i++;
+        // }
+
+        // Bài 5: Tính tổng của 20 số đầu tiên trong dãy Fibonacci.
+
+        // let n = 20; // Số lượng số Fibonacci cần tính tổng
+        // let fib = [0, 1]; // Mảng chứa dãy Fibonacci
+        // let sum = 1; // Khởi tạo tổng ban đầu
+
+        // for (let i = 2; i < n; i++) {
+        //     fib[i] = fib[i - 1] + fib[i - 2];
+        //     sum += fib[i];
+        // }
+
+        // console.log("Tổng của 20 số Fibonacci đầu tiên là: " + sum);
+
+        // Bài 6: Tính tổng của 30 số chia hết cho 7 đầu tiên trong các số tự nhiên.
+
+
+        let count = 0; // Đếm biến đếm số lượng số chia hết cho 7 đã tìm thấy
+        let sum = 0; // Biến tổng
+
+        for (let i = 1; count < 30; i++) {
+            if (i % 7 === 0) {
+                sum += i;
+                count++;
+            }
+        }
+
+        console.log("Tổng của 30 số chia hết cho 7 đầu tiên là: " + sum);
+        // Bài 7: Hãy viết một chương trình in ra các số từ 1 đến 100. Nhưng nếu số chia hết cho 3 thì in ra "Fizz", 5 thì in ra "Buzz" thay vì in ra số đó.Và nếu số đó chia hết cho cả 3 và 5 thì in ra chữ "FizzBuzz".
+
+
+        for (let i = 1; i <= 100; i++) {
+            if (i % 3 === 0 && i % 5 === 0) {
+                console.log("FizzBuzz");
+            } else if (i % 3 === 0) {
+                console.log("Fizz");
+            } else if (i % 5 === 0) {
+                console.log("Buzz");
+            } else {
+                console.log(i);
+            }
+        }
+    </script>
+</body>
+
+</html>
