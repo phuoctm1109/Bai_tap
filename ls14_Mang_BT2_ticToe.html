@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let board = [
+            ["", "", ""],
+            ["", "", ""],
+            ["", "", ""]
+        ];
+
+        let currentPlayer = "X";
+
+        function printBoard() {
+            console.log("---------");
+            for (let i = 0; i < 3; i++) {
+                let row = "|";
+                for (let j = 0; j < 3; j++) {
+                    row += " " + board[i][j] + " |";
+                }
+                console.log(row);
+                console.log("---------");
+            }
+        }
+
+        function makeMove(row, col) {
+            if (board[row][col] === "") {
+                board[row][col] = currentPlayer;
+                printBoard();
+                checkWinner(currentPlayer);
+                switchPlayer();
+            } else {
+                console.log("Ô đã được đánh, vui lòng chọn ô khác!");
+            }
+        }
+
+        function switchPlayer() {
+            currentPlayer = currentPlayer === "X" ? "O" : "X";
+        }
+
+        function checkWinner(player) {
+            // Kiểm tra hàng ngang
+            for (let i = 0; i < 3; i++) {
+                if (board[i][0] === player && board[i][1] === player && board[i][2] === player) {
+                    console.log(`Người chơi ${player} chiến thắng!`);
+                    return;
+                }
+            }
+
+            // Kiểm tra hàng dọc
+            for (let j = 0; j < 3; j++) {
+                if (board[0][j] === player && board[1][j] === player && board[2][j] === player) {
+                    console.log(`Người chơi ${player} chiến thắng!`);
+                    return;
+                }
+            }
+
+            // Kiểm tra đường chéo
+            if (
+                (board[0][0] === player && board[1][1] === player && board[2][2] === player) ||
+                (board[0][2] === player && board[1][1] === player && board[2][0] === player)
+            ) {
+                console.log(`Người chơi ${player} chiến thắng!`);
+                return;
+            }
+
+            // Kiểm tra hòa
+            let isTie = true;
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (board[i][j] === "") {
+                        isTie = false;
+                        break;
+                    }
+                }
+                if (!isTie) {
+                    break;
+                }
+            }
+            if (isTie) {
+                console.log("Trò chơi hòa!");
+            }
+        }
+
+        printBoard();
+        console.log("Người chơi X đi trước!");
+
+        while (true) {
+            let row = parseInt(prompt("Nhập hàng (0-2):"));
+            let col = parseInt(prompt("Nhập cột (0-2):"));
+
+            makeMove(row, col);
+        }
+    </script>
+</body>
+
+</html>
