@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý thu chi tài chính cá nhân</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .transactionForm {
+            margin-bottom: 10px;
+        }
+
+        .transactionTable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .transactionTable th,
+        .transactionTable td {
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .summary {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .chartContainer {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Quản lý thu chi tài chính cá nhân</h1>
+
+    <form id="transactionForm" class="transactionForm">
+        <label for="transactionType">Loại giao dịch:</label>
+        <select id="transactionType">
+            <option value="income">Thu</option>
+            <option value="expense">Chi</option>
+        </select>
+
+        <label for="transactionAmount">Số tiền (VNĐ):</label>
+        <input type="text" id="transactionAmount" />
+
+        <label for="transactionDate">Ngày phát sinh:</label>
+        <input type="date" id="transactionDate" />
+
+        <label for="transactionDescription">Nội dung giao dịch:</label>
+        <input type="text" id="transactionDescription" />
+
+        <button type="submit">Thêm giao dịch</button>
+    </form>
+
+    <table id="transactionTable" class="transactionTable">
+        <thead>
+            <tr>
+                <th>Loại giao dịch</th>
+                <th>Số tiền</th>
+                <th>Ngày phát sinh</th>
+                <th>Nội dung giao dịch</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody id="transactionTableBody"></tbody>
+    </table>
+
+    <div id="summary" class="summary">
+        <p>Tổng thu: <span id="totalIncome">0.00</span> VNĐ</p>
+        <p>Tổng chi: <span id="totalExpense">0.00</span> VNĐ</p>
+    </div>
+
+    <div id="chartContainer" class="chartContainer">
+        <canvas id="chart"></canvas>
+    </div>
+
+    <table id="statsTable" class="transactionTable">
+        <thead>
+            <tr>
+                <th>Tháng</th>
+                <th>Tổng thu</th>
+                <th>Tổng chi</th>
+            </tr>
+        </thead>
+        <tbody id="statsTableBody"></tbody>
+        <tfoot>
+            <tr>
+                <th>Tổng cộng</th>
+                <th id="totalIncomeFooter">0.00 VNĐ</th>
+                <th id="totalExpenseFooter">0.00 VNĐ</th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        class Transaction {
+            constructor(type, amount, date, description) {
+                this.type = type;
+                this.amount = amount;
+                this.date = date;
+                this.description = description;
+            }
+        }
+
+        class TransactionManager {
+            constructor() {
+                this.transactions = [];
+                this.transactionForm = document.getElementById('transactionForm');
+                this.transactionTypeInput = document.getElementById('transactionType');
+                this.transactionAmountInput = document.getElementById('transactionAmount');
+                this.transactionDateInput = document.getElementById('transactionDate');
+                this.transactionDescriptionInput = document.getElementById('transactionDescription');
+                this.transactionTableBody = document.getElementById('transactionTableBody');
+                this.totalIncomeSpan = document.getElementById('totalIncome');
+                this.totalExpenseSpan = document.getElementById('totalExpense');
+                this.chartCanvas = document.getElementById('chart');
+                this.statsTableBody = document.getElementById('statsTableBody');
+                this.totalIncomeFooter = document.getElementById('totalIncomeFooter');
+                this.totalExpenseFooter = document.getElementById('totalExpenseFooter');
+
+                this.transactionForm.addEventListener('submit', this.addTransaction.bind(this));
+
+                this.loadTransactions();
+                this.renderTransactionTable();
+                this.renderSummary();
+                this.renderChart();
+                this.renderStatsTable();
+            }
+
+            loadTransactions() {
+                const storedTransactions = localStorage.getItem('transactions');
+                this.transactions = storedTransactions ? JSON.parse(storedTransactions) : [];
+            }
+
+            saveTransactions() {
+                localStorage.setItem('transactions', JSON.stringify(this.transactions));
+            }
+
+            addTransaction(event) {
+                event.preventDefault();
+
+                const transactionType = this.transactionTypeInput.value;
+                const transactionAmount = parseFloat(this.transactionAmountInput.value.replace(/\D/g, ''));
+                const transactionDate = this.transactionDateInput.value;
+                const transactionDescription = this.transactionDescriptionInput.value;
+
+                const transaction = new Transaction(transactionType, transactionAmount, transactionDate, transactionDescription);
+                this.transactions.push(transaction);
+
+                this.resetTransactionForm();
+                this.renderTransactionTable();
+                this.renderSummary();
+                this.saveTransactions();
+                this.renderChart();
+                this.renderStatsTable();
+            }
+
+            resetTransactionForm() {
+                this.transactionTypeInput.value = 'income';
+                this.transactionAmountInput.value = '';
+                this.transactionDateInput.value = '';
+                this.transactionDescriptionInput.value = '';
+            }
+
+            renderTransactionTable() {
+                this.transactionTableBody.innerHTML = '';
+
+                this.transactions.forEach((transaction, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                    <td>${transaction.type === 'income' ? 'Thu' : 'Chi'}</td>
+                    <td>${this.formatCurrency(transaction.amount)}</td>
+                    <td>${transaction.date}</td>
+                    <td>${transaction.description}</td>
+                    <td>
+                        <button class="editButton" data-index="${index}">Sửa</button>
+                        <button class="deleteButton" data-index="${index}">Xóa</button>
+                    </td>
+                `;
+
+                    const editButton = row.querySelector('.editButton');
+                    editButton.addEventListener('click', () => this.editTransaction(index));
+
+                    const deleteButton = row.querySelector('.deleteButton');
+                    deleteButton.addEventListener('click', () => this.deleteTransaction(index));
+
+                    this.transactionTableBody.appendChild(row);
+                });
+            }
+
+            editTransaction(index) {
+                const transaction = this.transactions[index];
+                this.transactionTypeInput.value = transaction.type;
+                this.transactionAmountInput.value = transaction.amount;
+                this.transactionDateInput.value = transaction.date;
+                this.transactionDescriptionInput.value = transaction.description;
+
+                this.transactions.splice(index, 1);
+                this.renderTransactionTable();
+                this.renderSummary();
+                this.saveTransactions();
+                this.renderChart();
+                this.renderStatsTable();
+            }
+
+            deleteTransaction(index) {
+                this.transactions.splice(index, 1);
+                this.renderTransactionTable();
+                this.renderSummary();
+                this.saveTransactions();
+                this.renderChart();
+                this.renderStatsTable();
+            }
+
+            renderSummary() {
+                let totalIncome = 0;
+                let totalExpense = 0;
+
+                this.transactions.forEach(transaction => {
+                    if (transaction.type === 'income') {
+                        totalIncome += transaction.amount;
+                    } else if (transaction.type === 'expense') {
+                        totalExpense += transaction.amount;
+                    }
+                });
+
+                this.totalIncomeSpan.textContent = this.formatCurrency(totalIncome);
+                this.totalExpenseSpan.textContent = this.formatCurrency(totalExpense);
+                this.totalIncomeFooter.textContent = this.formatCurrency(totalIncome);
+                this.totalExpenseFooter.textContent = this.formatCurrency(totalExpense);
+            }
+
+            formatCurrency(amount) {
+                const formatter = new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
+                return formatter.format(amount);
+            }
+
+            renderChart() {
+                const monthlyData = this.calculateMonthlyIncome();
+                const months = Array.from(monthlyData.keys());
+                const incomeData = Array.from(monthlyData.values(), data => data.income);
+                const expenseData = Array.from(monthlyData.values(), data => data.expense);
+
+                const chart = new Chart(this.chartCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: months,
+                        datasets: [
+                            {
+                                label: 'Thu',
+                                data: incomeData,
+                                backgroundColor: '#36A2EB'
+                            },
+                            {
+                                label: 'Chi',
+                                data: expenseData,
+                                backgroundColor: '#FF6384'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: value => this.formatCurrency(value)
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => {
+                                        const datasetLabel = context.dataset.label || '';
+                                        const value = context.parsed.y;
+                                        return `${datasetLabel}: ${this.formatCurrency(value)}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            calculateMonthlyIncome() {
+                const monthlyIncome = new Map();
+
+                for (const transaction of this.transactions) {
+                    const month = transaction.date.substr(0, 7);
+                    if (!monthlyIncome.has(month)) {
+                        monthlyIncome.set(month, { income: 0, expense: 0 });
+                    }
+
+                    const monthlyData = monthlyIncome.get(month);
+                    if (transaction.type === 'income') {
+                        monthlyData.income += transaction.amount;
+                    } else if (transaction.type === 'expense') {
+                        monthlyData.expense += transaction.amount;
+                    }
+                }
+
+                return monthlyIncome;
+            }
+
+            renderStatsTable() {
+                this.statsTableBody.innerHTML = '';
+
+                const monthlyData = this.calculateMonthlyIncome();
+                let totalIncome = 0;
+                let totalExpense = 0;
+
+                for (const [month, { income, expense }] of monthlyData) {
+                    totalIncome += income;
+                    totalExpense += expense;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${month}</td>
+                        <td>${this.formatCurrency(income)}</td>
+                        <td>${this.formatCurrency(expense)}</td>
+                    `;
+                    this.statsTableBody.appendChild(row);
+                }
+
+                const totalRow = document.createElement('tr');
+                totalRow.innerHTML = `
+                    <th>Tổng cộng</th>
+                    <th>${this.formatCurrency(totalIncome)}</th>
+                    <th>${this.formatCurrency(totalExpense)}</th>
+                `;
+                this.statsTableBody.appendChild(totalRow);
+            }
+        }
+
+        new TransactionManager();
+    </script>
+</body>
+
+</html>
